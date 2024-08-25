@@ -35,7 +35,12 @@ public class PostServiceImpl implements IPostService {
 
     @Override
     public List<PostDTO> fetchAllPosts() {
-        List<Post> posts = postRepository.findAll();
+        List<Post> posts;
+        try {
+            posts = postRepository.findAll();
+        } catch (Exception ex) {
+            throw new EntityNotFoundException(ex.toString());
+        }
         if (isNull(posts) || posts.isEmpty()) {
             throw new EntityNotFoundException("No Posts present in Database");
         }
@@ -50,7 +55,7 @@ public class PostServiceImpl implements IPostService {
         List<Post> posts;
         try {
             posts = postRepository.findByProfile(profile);
-        } catch(Exception ex){
+        } catch (Exception ex) {
             throw new EntityNotFoundException(ex.toString());
         }
         if (isNull(posts) || posts.isEmpty()) {
@@ -62,7 +67,12 @@ public class PostServiceImpl implements IPostService {
     @Override
     public List<PostDTO> fetchPostsByProfileAndExperience(String profile, Integer experience) {
         validateProfileAndExperienceRequest(profile, experience);
-        List<Post> posts = postRepository.findByProfileAndExp(profile, experience);
+        List<Post> posts;
+        try {
+            posts = postRepository.findByProfileAndExp(profile, experience);
+        } catch (Exception ex) {
+            throw new EntityNotFoundException(ex.toString());
+        }
         if (isNull(posts) || posts.isEmpty()) {
             throw new EntityNotFoundException("Post not found for profile : " + profile +
                     " and experience : " + experience);
@@ -122,7 +132,12 @@ public class PostServiceImpl implements IPostService {
     }
 
     private List<Post> fetchPostsFromDBByProfile(String profile) {
-        List<Post> postFetchedList = postRepository.findByProfile(profile);
+        List<Post> postFetchedList;
+        try {
+            postFetchedList = postRepository.findByProfile(profile);
+        } catch (Exception ex) {
+            throw new EntityNotFoundException(ex.toString());
+        }
         if (isNull(postFetchedList) || postFetchedList.isEmpty()) {
             throw new EntityNotFoundException("Jobs not found for profile : " + profile);
         }
@@ -130,7 +145,12 @@ public class PostServiceImpl implements IPostService {
     }
 
     private void validateForDuplicateEntity(String profile) {
-        List<Post> postFetchedList = postRepository.findByProfile(profile);
+        List<Post> postFetchedList;
+        try {
+            postFetchedList = postRepository.findByProfile(profile);
+        } catch (Exception ex) {
+            throw new EntityNotFoundException(ex.toString());
+        }
         if (nonNull(postFetchedList) && !postFetchedList.isEmpty()) {
             boolean hasDuplicate = postFetchedList.stream()//stream
                     .map(Post::getProfile) //get the profile of postFetchedList
