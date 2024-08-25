@@ -1,14 +1,14 @@
 # joblisting project
 
 ## Requirements
-OpenJDK 21
-SpringBoot 3
-Redis Cache
+* OpenJDK 21
+* SpringBoot 3
+* Redis Cache
 
 
 ## MongoDB
 * **Standalone**
-* Import the data from jsondata file in mongoDB
+* Import the data from jsondata file in mongoDB for some raw data.
 
 ## Architecture
 - The "controller" package holds controllers for API endpoints and provides interception.
