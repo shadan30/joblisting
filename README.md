@@ -19,4 +19,5 @@ Redis Cache
 - The "repository" package holds Repository, It contains interfaces and classes that interact with the MongoDB database, allowing for CRUD operations.
 - The "service" package holds service classes which defined business logic.
 - The "transformer" package contains the mapper, this contains classes and interfaces responsible for converting between different object models.
-- The "configuration" package contains the configuration beans, we have initiated bean of Redis Cache to use Expiration Time of cache entries
+- The "configuration" package contains the configuration beans, we have initiated bean of Redis Cache to use Expiration Time of cache entries,This also has "helper" package to support cache functions manually
+
