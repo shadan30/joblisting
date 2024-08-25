@@ -19,7 +19,7 @@ public class RedisHelper {
     //evict cache
     public void evictCache(String cacheName, Object key) {
         if (isNull(cacheName) || isNull(key)) {
-            throw new RedisException("Empty request to update Cache");
+            throw new RedisException("Empty request to evict cache");
         }
         Cache cache = cacheManager.getCache(cacheName);
         if (cache != null) {
@@ -41,7 +41,7 @@ public class RedisHelper {
     //fetch cache
     public Object getFromCache(String cacheName, Object key) {
         if (isNull(cacheName) || isNull(key)) {
-            throw new RedisException("Empty request to update Cache");
+            throw new RedisException("Empty request to fetch Cache");
         }
         Cache cache = cacheManager.getCache(cacheName);
         if (cache != null) {
