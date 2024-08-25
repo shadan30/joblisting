@@ -9,7 +9,8 @@ public enum ErrorNames {
     ENTITY_NOT_FOUND("Entity Not Found"),
     VALIDATION_ERROR("Validation Error"),
     FAILED_TO_SAVE_IN_DB("Failed to save"),
-    DUPLICATE_FOUND("Duplicate Found");
+    DUPLICATE_FOUND("Duplicate Found"),
+    REDIS_ERROR("Redis Error");
 
     private String name;
 
