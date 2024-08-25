@@ -110,17 +110,20 @@ public class PostServiceImpl implements IPostService {
         }
         return "Successfully deleted Job Posts with profile : "+profile;
     }
+
     @Override
     @Transactional
-    @CacheEvict(value = "profile", key = "#profile") // will evict the cacheValues
-    public List<PostDTO> updateJopByProfile(String profile, PostDTO post) {
+    //Not use cache evict here , because fetchPostsFromDBByProfile is using Cacheable , so using cacheEvict here will
+    //empty the cache and while fetching the data will be fetched from database , and stale data will be saved in cache,
+    //so we have use cacheable or cachePut while calling saveAll
+    public List<PostDTO> updateJobByProfile(String profile, PostDTO post) {
         if (isNull(profile) || isNull(post)) {
             throw new ValidationException("Request cannot be empty");
         }
         if (!profile.equals(post.getProfile())) {
             throw new ValidationException("Profile does not match with request body");
         }
-        List<Post> postFetchedList = fetchPostsFromDBByProfile(profile);
+        List<Post> postFetchedList = fetchPostsFromDBByProfile(profile); // will use cache to fetch data
         postServiceHelper.addPostDTODetailsInPostList(postFetchedList, post);//update values in postFetchedList
         List<Post> response;
         try {
@@ -128,6 +131,7 @@ public class PostServiceImpl implements IPostService {
         } catch (Exception ex) {
             throw new EntityNotSavedException("Error saving updated posts: " + ex.getMessage());
         }
+        postServiceHelper.updateCacheEntry("profile", profile, response); // will update cache
         return postServiceHelper.convertPostToPostDTOList(response);
     }
 

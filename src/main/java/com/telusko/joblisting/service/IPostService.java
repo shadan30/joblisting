@@ -15,5 +15,5 @@ public interface IPostService {
 
     String deleteJobPostByProfile(String profile);
 
-    List<PostDTO> updateJopByProfile(String profile, PostDTO post);
+    List<PostDTO> updateJobByProfile(String profile, PostDTO post);
 }

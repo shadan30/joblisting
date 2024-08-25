@@ -47,9 +47,9 @@ public class PostController {
     }
 
     @PutMapping("/profile")
-    public List<PostDTO> updateJopByProfile(@RequestParam String profile,
+    public List<PostDTO> updateJobByProfile(@RequestParam String profile,
                                      @RequestBody PostDTO post) {
-        return postService.updateJopByProfile(profile, post);
+        return postService.updateJobByProfile(profile, post);
     }
 
 }
