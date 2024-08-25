@@ -11,12 +11,12 @@ import java.util.List;
 
 @Repository
 public interface IPostRepository extends MongoRepository<Post, String> {
-    @Cacheable(value = "profile" , key = "#profile")
+    @Cacheable(value = "profile", key = "#profile")
     List<Post> findByProfile(String profile);
 
-    @Cacheable(value = "profileAndExp" , key = "#profileAndExp")
+    @Cacheable(value = "profileAndExp", key = "#profile + '_' + #experience")
     List<Post> findByProfileAndExp(String profile, Integer experience);
 
-    @CacheEvict(value = "profile" , key = "#profile")
+    @CacheEvict(value = "profile", key = "#profile")
     void deleteByProfile(String profile);
 }
