@@ -11,10 +11,10 @@ import com.telusko.joblisting.repository.IPostRepository;
 import com.telusko.joblisting.service.IPostService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -47,7 +47,12 @@ public class PostServiceImpl implements IPostService {
         if (isBlank(profile)) {
             throw new ValidationException("Profile is Empty in request");
         }
-        List<Post> posts = postRepository.findByProfile(profile);
+        List<Post> posts;
+        try {
+            posts = postRepository.findByProfile(profile);
+        } catch(Exception ex){
+            throw new EntityNotFoundException(ex.toString());
+        }
         if (isNull(posts) || posts.isEmpty()) {
             throw new EntityNotFoundException("Post not found for profile : " + profile);
         }
@@ -95,9 +100,9 @@ public class PostServiceImpl implements IPostService {
         }
         return "Successfully deleted Job Posts with profile : "+profile;
     }
-
-    @Transactional
     @Override
+    @Transactional
+    @CacheEvict(value = "profile", key = "#profile") // will evict the cacheValues
     public List<PostDTO> updateJopByProfile(String profile, PostDTO post) {
         if (isNull(profile) || isNull(post)) {
             throw new ValidationException("Request cannot be empty");
