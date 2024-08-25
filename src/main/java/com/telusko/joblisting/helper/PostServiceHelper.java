@@ -1,6 +1,8 @@
 package com.telusko.joblisting.helper;
 
+import com.telusko.joblisting.configuration.helper.RedisHelper;
 import com.telusko.joblisting.dto.PostDTO;
+import com.telusko.joblisting.exception.code.RedisException;
 import com.telusko.joblisting.model.Post;
 import com.telusko.joblisting.transformer.IPostMapper;
 import lombok.RequiredArgsConstructor;
@@ -18,6 +20,9 @@ public class PostServiceHelper {
 
     @Autowired
     IPostMapper postMapper;
+
+    @Autowired
+    RedisHelper redisHelper;
 
     public List<PostDTO> convertPostToPostDTOList(List<Post> posts) {
         if (isNull(posts)) {
@@ -45,6 +50,13 @@ public class PostServiceHelper {
             return;
         }
         postMapper.addPostDTODetailsInPostList(postList,post);
+    }
+
+    public void updateCacheEntry(String cacheName, Object key, Object value) {
+        if (isNull(cacheName) || isNull(key) || isNull(value)) {
+            throw new RedisException("Empty request to update Cache");
+        }
+        redisHelper.putCache(cacheName, key, value);
     }
 
 }

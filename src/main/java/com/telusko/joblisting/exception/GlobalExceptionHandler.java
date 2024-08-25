@@ -63,6 +63,16 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         return buildResponseEntity(apiException);
     }
 
+    @ExceptionHandler(RedisException.class)
+    public final ResponseEntity<Object> handleRedisException(RedisException ex) {
+        ApiException apiException = ApiException.builder()
+                .statusCode(HttpStatus.BAD_REQUEST)
+                .statusMessage(ErrorNames.VALIDATION_ERROR.getName())
+                .debugMessage(ex.getMessage())
+                .build();
+        return buildResponseEntity(apiException);
+    }
+
     // This will be thrown everytime there is JSON not readable exception , this is overriding method from extended class
     @Override
     protected ResponseEntity<Object> handleHttpMessageNotReadable(HttpMessageNotReadableException ex,

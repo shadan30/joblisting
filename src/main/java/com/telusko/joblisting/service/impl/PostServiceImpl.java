@@ -11,10 +11,10 @@ import com.telusko.joblisting.repository.IPostRepository;
 import com.telusko.joblisting.service.IPostService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -35,7 +35,12 @@ public class PostServiceImpl implements IPostService {
 
     @Override
     public List<PostDTO> fetchAllPosts() {
-        List<Post> posts = postRepository.findAll();
+        List<Post> posts;
+        try {
+            posts = postRepository.findAll();
+        } catch (Exception ex) {
+            throw new EntityNotFoundException(ex.toString());
+        }
         if (isNull(posts) || posts.isEmpty()) {
             throw new EntityNotFoundException("No Posts present in Database");
         }
@@ -47,7 +52,12 @@ public class PostServiceImpl implements IPostService {
         if (isBlank(profile)) {
             throw new ValidationException("Profile is Empty in request");
         }
-        List<Post> posts = postRepository.findByProfile(profile);
+        List<Post> posts;
+        try {
+            posts = postRepository.findByProfile(profile);
+        } catch (Exception ex) {
+            throw new EntityNotFoundException(ex.toString());
+        }
         if (isNull(posts) || posts.isEmpty()) {
             throw new EntityNotFoundException("Post not found for profile : " + profile);
         }
@@ -57,7 +67,12 @@ public class PostServiceImpl implements IPostService {
     @Override
     public List<PostDTO> fetchPostsByProfileAndExperience(String profile, Integer experience) {
         validateProfileAndExperienceRequest(profile, experience);
-        List<Post> posts = postRepository.findByProfileAndExp(profile, experience);
+        List<Post> posts;
+        try {
+            posts = postRepository.findByProfileAndExp(profile, experience);
+        } catch (Exception ex) {
+            throw new EntityNotFoundException(ex.toString());
+        }
         if (isNull(posts) || posts.isEmpty()) {
             throw new EntityNotFoundException("Post not found for profile : " + profile +
                     " and experience : " + experience);
@@ -96,16 +111,19 @@ public class PostServiceImpl implements IPostService {
         return "Successfully deleted Job Posts with profile : "+profile;
     }
 
-    @Transactional
     @Override
-    public List<PostDTO> updateJopByProfile(String profile, PostDTO post) {
+    @Transactional
+    //Not use cache evict here , because fetchPostsFromDBByProfile is using Cacheable , so using cacheEvict here will
+    //empty the cache and while fetching the data will be fetched from database , and stale data will be saved in cache,
+    //so we have use cacheable or cachePut while calling saveAll
+    public List<PostDTO> updateJobByProfile(String profile, PostDTO post) {
         if (isNull(profile) || isNull(post)) {
             throw new ValidationException("Request cannot be empty");
         }
         if (!profile.equals(post.getProfile())) {
             throw new ValidationException("Profile does not match with request body");
         }
-        List<Post> postFetchedList = fetchPostsFromDBByProfile(profile);
+        List<Post> postFetchedList = fetchPostsFromDBByProfile(profile); // will use cache to fetch data
         postServiceHelper.addPostDTODetailsInPostList(postFetchedList, post);//update values in postFetchedList
         List<Post> response;
         try {
@@ -113,11 +131,17 @@ public class PostServiceImpl implements IPostService {
         } catch (Exception ex) {
             throw new EntityNotSavedException("Error saving updated posts: " + ex.getMessage());
         }
+        postServiceHelper.updateCacheEntry("profile", profile, response); // will update cache
         return postServiceHelper.convertPostToPostDTOList(response);
     }
 
     private List<Post> fetchPostsFromDBByProfile(String profile) {
-        List<Post> postFetchedList = postRepository.findByProfile(profile);
+        List<Post> postFetchedList;
+        try {
+            postFetchedList = postRepository.findByProfile(profile);
+        } catch (Exception ex) {
+            throw new EntityNotFoundException(ex.toString());
+        }
         if (isNull(postFetchedList) || postFetchedList.isEmpty()) {
             throw new EntityNotFoundException("Jobs not found for profile : " + profile);
         }
@@ -125,7 +149,12 @@ public class PostServiceImpl implements IPostService {
     }
 
     private void validateForDuplicateEntity(String profile) {
-        List<Post> postFetchedList = postRepository.findByProfile(profile);
+        List<Post> postFetchedList;
+        try {
+            postFetchedList = postRepository.findByProfile(profile);
+        } catch (Exception ex) {
+            throw new EntityNotFoundException(ex.toString());
+        }
         if (nonNull(postFetchedList) && !postFetchedList.isEmpty()) {
             boolean hasDuplicate = postFetchedList.stream()//stream
                     .map(Post::getProfile) //get the profile of postFetchedList
