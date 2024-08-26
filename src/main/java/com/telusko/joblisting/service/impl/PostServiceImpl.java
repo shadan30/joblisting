@@ -10,8 +10,8 @@ import com.telusko.joblisting.model.Post;
 import com.telusko.joblisting.repository.IPostRepository;
 import com.telusko.joblisting.service.IPostService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -23,6 +23,7 @@ import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
 
 @Service
+@Slf4j
 @RequiredArgsConstructor
 public class PostServiceImpl implements IPostService {
 
@@ -39,11 +40,14 @@ public class PostServiceImpl implements IPostService {
         try {
             posts = postRepository.findAll();
         } catch (Exception ex) {
+            log.error("Error while fetching Jobs");
             throw new EntityNotFoundException(ex.toString());
         }
         if (isNull(posts) || posts.isEmpty()) {
+            log.error("No Posts present in database");
             throw new EntityNotFoundException("No Posts present in Database");
         }
+        log.info("Total posts present : {}",posts.size());
         return postServiceHelper.convertPostToPostDTOList(posts);
     }
 
