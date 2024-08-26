@@ -4,6 +4,7 @@
 * OpenJDK 21
 * SpringBoot 3
 * Redis Cache
+* ELK stack
 
 
 ## MongoDB
