@@ -21,5 +21,7 @@
 - The "repository" package holds Repository, It contains interfaces and classes that interact with the MongoDB database, allowing for CRUD operations.
 - The "service" package holds service classes which defined business logic.
 - The "transformer" package contains the mapper, this contains classes and interfaces responsible for converting between different object models.
-- The "configuration" package contains the configuration beans, we have initiated bean of Redis Cache to use Expiration Time of cache entries,This also has "helper" package to support cache functions manually
+- The "configuration" package contains the configuration beans,This also has "helper" package to support cache functions manually
+  - We have initiated bean of Redis Cache to use Expiration Time of cache entries
+  - We have made bean for Security , which will map multiple users to multiple passwords and roles
 
