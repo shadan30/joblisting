@@ -85,22 +85,30 @@ public class PostServiceImpl implements IPostService {
     }
 
     @Override
+    @Transactional
     public String createJobPost(PostDTO post) {
         if (isNull(post)) {
             throw new ValidationException("Empty post request");
         }
 
         validateForDuplicateEntity(post.getProfile());
+        Post postSaved;
         try {
             //we would have use GlobalExceptionHandler , but there can be many exceptions thrown while using repository
-            postRepository.save(postServiceHelper.convertPostDTOToPost(post));
+            postSaved=postRepository.save(postServiceHelper.convertPostDTOToPost(post));
         } catch (Exception ex) {
             throw new EntityNotSavedException(ex.getMessage());
         }
+        // will update cache after the fetch
+        // Since we are first fetching to check for duplicate (in validateForDuplicateEntity)
+        // So , if we do not find any entry for profile we will come in the flow and save that entry
+        // Now , we have to update that cache entry which was saved as null before , for correct fetching
+        postServiceHelper.updateCacheEntry("profile", post.getProfile(), List.of(postSaved));
         return "Successfully saved post with profile: " + post.getProfile();
     }
 
     @Override
+    @Transactional
     public String deleteJobPostByProfile(String profile) {
         if(isNull(profile) || profile.isEmpty()){
             throw new ValidationException("Profile cannot be empty");
