@@ -5,6 +5,7 @@
 * SpringBoot 3
 * Redis Cache
 * ELK stack
+* Http Basic authentication
 
 
 ## MongoDB
