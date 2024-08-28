@@ -12,14 +12,17 @@ This is multi-module spring project which supports MongoDB , Redis caching , Mon
 
 ## MongoDB
 * **Standalone**
-* Import the data from jsondata file in mongoDB for some raw data.
+* Import the data from jsondata file in JobPost collection of telusko database in mongoDB for some raw data.
+* Import the data from UserDetailsJson file in User collection of telusko database in mongoDB for some raw data.
 
 ## Architecture
 
 - joblisting-commons -> Contains POJOs and global exception handling.
 - joblisting-database -> Data access layer.
 - joblisting-core -> Contains configurations, controllers, services, and acts as the application starter
-- joblisting-security -> Security features (yet to be fully defined).
+- joblisting-security -> 
+    - First, implemented authentication from properties file
+    - Second, implemented authentication from database users
 
 
 ## Module dependency
@@ -39,6 +42,6 @@ This is multi-module spring project which supports MongoDB , Redis caching , Mon
 - The "service" package holds service classes which defined business logic.
 - The "transformer" package contains the mapper, this contains classes and interfaces responsible for converting between different object models.
 - The "configuration" package contains the configuration beans,This also has "helper" package to support cache functions manually
-  - We have initiated bean of Redis Cache to use Expiration Time of cache entries 
-  - We have configured security layer
+  - We have initiated bean of Redis Cache to use Expiration Time of cache entries .
+  - We have configured security layer.
 
