@@ -1,20 +1,20 @@
-package com.telusko.joblisting.security.configuration;
-
-import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.provisioning.InMemoryUserDetailsManager;
-
-import java.util.List;
-// This is to fetch user data from application.properties
+//package com.telusko.joblisting.security.configuration;
+//
+//import lombok.AllArgsConstructor;
+//import org.springframework.beans.factory.annotation.Value;
+//import org.springframework.context.annotation.Bean;
+//import org.springframework.context.annotation.Configuration;
+//import org.springframework.security.core.userdetails.User;
+//import org.springframework.security.core.userdetails.UserDetailsService;
+//import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+//import org.springframework.security.crypto.password.PasswordEncoder;
+//import org.springframework.security.provisioning.InMemoryUserDetailsManager;
+//
+//import java.util.List;
+//// This is to fetch user data from application.properties
 //@Configuration
 //@AllArgsConstructor
-public class UserServiceConfig {
+//public class UserServiceConfig {
 //    @Value("${spring.security.user.name}")
 //    private List<String> usernames;
 //
@@ -51,5 +51,5 @@ public class UserServiceConfig {
 //    public PasswordEncoder passwordEncoder() {
 //        return new BCryptPasswordEncoder(); // this encoding will be applied to passwords
 //    }
-
-}
+//
+//}
