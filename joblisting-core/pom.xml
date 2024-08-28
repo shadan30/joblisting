@@ -14,14 +14,9 @@
 
     <dependencies>
         <dependency>
-             <groupId>org.example</groupId>
-             <artifactId>joblisting-database</artifactId>
-            <version>0.0.1-SNAPSHOT</version>
-        </dependency>
-        <dependency>
             <groupId>org.example</groupId>
             <artifactId>joblisting-security</artifactId>
-            <version>0.0.1-SNAPSHOT</version>
+            <version>0.0.2-SNAPSHOT</version>
         </dependency>
    </dependencies>
 
