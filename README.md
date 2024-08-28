@@ -17,7 +17,7 @@ This is multi-module spring project which supports MongoDB , Redis caching , Mon
 ## Architecture
 
 - joblisting-commons -> Contains POJOs and global exception handling.
-- joblisting-database -> Data access layer..
+- joblisting-database -> Data access layer.
 - joblisting-core -> Contains configurations, controllers, services, and acts as the application starter
 - joblisting-security -> Security features (yet to be fully defined).
 
@@ -25,8 +25,8 @@ This is multi-module spring project which supports MongoDB , Redis caching , Mon
 ## Module dependency
 - joblisting-commons -> Not using any base package.
 - joblisting-database -> Uses joblisting-commons.
-- joblisting-core -> Uses joblisting-database and inherently joblisting-commons
-- joblisting-security -> Dependencies to be decided.
+- joblisting-security -> Uses joblisting-database and inherently joblisting-commons
+- joblisting-core -> Uses joblisting-security and inherently joblisting-database
 
 
 ## Packages
@@ -39,6 +39,6 @@ This is multi-module spring project which supports MongoDB , Redis caching , Mon
 - The "service" package holds service classes which defined business logic.
 - The "transformer" package contains the mapper, this contains classes and interfaces responsible for converting between different object models.
 - The "configuration" package contains the configuration beans,This also has "helper" package to support cache functions manually
-  - We have initiated bean of Redis Cache to use Expiration Time of cache entries
-  - We have made bean for Security , which will map multiple users to multiple passwords and roles
+  - We have initiated bean of Redis Cache to use Expiration Time of cache entries 
+  - We have configured security layer
 

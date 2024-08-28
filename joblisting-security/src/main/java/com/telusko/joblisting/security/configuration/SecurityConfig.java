@@ -15,6 +15,8 @@ public class CSRFConfig {
     // securityFilterChain is used to configure CSRF for POST,PUT,DELETE requests which were not getting hit before
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+        //SecurityFilterChain is not a filter itself. Instead, it's a bean that represents the entire filter chain used by Spring Security.
+
         //disable csrf
         http.csrf(csrfCustomizer -> csrfCustomizer.disable()) // disables csrf protection for our application
         // authenticate any request -> enable authentication , but we will bypass the security layer and get 403 forbidden in Postman Client
