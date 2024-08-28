@@ -4,5 +4,6 @@ import com.telusko.joblisting.common.dto.UserDTO;
 
 public interface IUserService {
 
-    String registerUser(UserDTO user);
+    String createNewUser(UserDTO user);
+    String updateUserPassword(UserDTO user);
 }

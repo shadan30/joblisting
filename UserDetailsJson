@@ -1,22 +1,48 @@
-[
-  {
-    "_id": "1",
-    "userName": "dem1",
-    "password": "demo1@1234"
+[{
+  "_id": {
+    "$oid": "66cf5f5fb1300711e209adb7"
   },
-  {
-    "_id": "2",
-    "userName": "demo2",
-    "password": "demo2@1234"
+  "userName": "demo6",
+  "password": "$2a$12$/C0NXbtUwE9OTrbrD8JL4uWc51oSl2/TPUB41gh3p2GiCGFL2iedy",
+  "_class": "com.telusko.joblisting.common.model.User"
+},
+{
+  "_id": {
+    "$oid": "66cf69582b12845e8c9e06e3"
   },
-  {
-    "_id": "3",
-    "userName": "demo3",
-    "password": "demo3@1234"
+  "userName": "dem1",
+  "password": "$2a$12$ld.QLaSiSVE8ZFvEq5mVnuy4cL3xF1AbSL/ZO8p5y8P28KpWTvfSm",
+  "_class": "com.telusko.joblisting.common.model.User"
+},
+{
+  "_id": {
+    "$oid": "66cf698a2b12845e8c9e06e4"
   },
-  {
-    "_id": "4",
-    "userName": "demo4",
-    "password": "demo4@1234"
-  }
-]
+  "userName": "demo2",
+  "password": "$2a$12$znlKI9u3Js04GNc2XHX3P.DvmjEvgf9t3.Uw44xbImaFJeRdciH5i",
+  "_class": "com.telusko.joblisting.common.model.User"
+},
+{
+  "_id": {
+    "$oid": "66cf69cd2b12845e8c9e06e5"
+  },
+  "userName": "demo3",
+  "password": "$2a$12$lfvxrcePdKUkD3aFJbMjN.ZSCAg1kVp/nASOrLS5STYDDc3N74fce",
+  "_class": "com.telusko.joblisting.common.model.User"
+},
+{
+  "_id": {
+    "$oid": "66cf6a232b12845e8c9e06e6"
+  },
+  "userName": "demo4",
+  "password": "$2a$12$jFSGHyzh04tN6RSa/Jc1X.x4Q8ETtJfq6dvc.dRXhBJLbwjBxTrMa",
+  "_class": "com.telusko.joblisting.common.model.User"
+},
+{
+  "_id": {
+    "$oid": "66cf6a482b12845e8c9e06e7"
+  },
+  "userName": "demo5",
+  "password": "$2a$12$DqPyttzvAXq4CG7R5tEqQO0XsRi4uHrTgBbGTLJrzpvrxFMm/1Nk.",
+  "_class": "com.telusko.joblisting.common.model.User"
+}]

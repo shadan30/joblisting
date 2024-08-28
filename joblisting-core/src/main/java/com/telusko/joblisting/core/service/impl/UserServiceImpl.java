@@ -31,11 +31,10 @@ public class UserServiceImpl implements IUserService {
     UserServiceHelper userServiceHelper;
 
     @Override
-    public String registerUser(UserDTO user) {
-        if (isNull(user) || isBlank(user.getUserName()) || isBlank((user.getPassword()))) {
-            throw new ValidationException("Invalid User Details");
-        }
+    public String createNewUser(UserDTO user) {
+        validateUserDetails(user);
         validateForDuplicateUser(user);
+        userServiceHelper.encodePassword(user);
         User savedUser;
         try {
             savedUser = userRepository.save(userServiceHelper.convertUserDTOToUser(user));
@@ -44,6 +43,38 @@ public class UserServiceImpl implements IUserService {
         }
         userServiceHelper.updateCacheEntry("userName", user.getUserName(), savedUser);
         return user.getUserName() + " user registered successfully";
+    }
+
+    @Override
+    public String updateUserPassword(UserDTO user) {
+        validateUserDetails(user);
+        User fetchedUser;
+        try {
+            fetchedUser = userRepository.findByUserName(user.getUserName());
+        } catch (Exception ex) {
+            throw new EntityNotFoundException(ex.getMessage());
+        }
+        if (isNull(fetchedUser)) {
+            throw new EntityNotFoundException(user.getUserName() + " is not present in database");
+        }
+        if (userServiceHelper.matchesPassword(user.getPassword(), fetchedUser.getPassword())) {
+            return "Password is same as old Password";
+        }
+        userServiceHelper.encodePassword(user);
+        fetchedUser.setPassword(user.getPassword());
+        try {
+            userRepository.save(fetchedUser);
+        } catch (Exception ex) {
+            throw new EntityNotFoundException(ex.getMessage());
+        }
+        userServiceHelper.updateCacheEntry("userName", user.getUserName(), fetchedUser);
+        return "Password Updated Successfully";
+    }
+
+    private static void validateUserDetails(UserDTO user) {
+        if (isNull(user) || isBlank(user.getUserName()) || isBlank((user.getPassword()))) {
+            throw new ValidationException("Invalid User Details");
+        }
     }
 
     private void validateForDuplicateUser(UserDTO user) {

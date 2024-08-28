@@ -5,6 +5,7 @@ import com.telusko.joblisting.common.exception.code.RedisException;
 import com.telusko.joblisting.common.model.User;
 import com.telusko.joblisting.common.transformer.IUserMapper;
 import com.telusko.joblisting.core.configuration.helper.RedisHelper;
+import com.telusko.joblisting.security.configuration.PasswordEncoderService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -12,6 +13,7 @@ import org.springframework.stereotype.Component;
 import java.util.ArrayList;
 import java.util.List;
 
+import static io.micrometer.common.util.StringUtils.isBlank;
 import static java.util.Objects.isNull;
 
 @Component
@@ -23,6 +25,9 @@ public class UserServiceHelper {
 
     @Autowired
     IUserMapper userMapper;
+
+    @Autowired
+    PasswordEncoderService passwordEncoderService;
 
     public List<UserDTO> convertUserListToUserDTOList(List<User> user) {
         if (isNull(user)) {
@@ -57,5 +62,19 @@ public class UserServiceHelper {
             throw new RedisException("Empty request to update Cache");
         }
         redisHelper.putCache(cacheName, key, value);
+    }
+
+    public void encodePassword(UserDTO user) {
+        if (isNull(user) || isNull(user.getPassword())) {
+            return;
+        }
+        user.setPassword(passwordEncoderService.encodePassword(user.getPassword()));
+    }
+
+    public boolean matchesPassword(String newPassword, String encodedPassword) {
+        if (isBlank(newPassword) || isBlank(encodedPassword)) {
+            return false;
+        }
+        return passwordEncoderService.matchesPassword(newPassword, encodedPassword);
     }
 }

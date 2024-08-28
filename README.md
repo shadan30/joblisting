@@ -14,7 +14,7 @@ This is multi-module spring project which supports MongoDB , Redis caching , Mon
 * **Standalone**
 * Import the data from jsondata file in JobPost collection of telusko database in mongoDB for some raw data.
 * Import the data from UserDetailsJson file in User collection of telusko database in mongoDB for some raw data.
-
+  * passwords saved -> dem1 -> demo1@1234 ; demo2 -> demo2@1234 ; demo3 -> demo3@1234 ; demo4 -> demo4@123 ; demo5 -> demo5@1234 ; demo6 -> demo6@234
 ## Architecture
 
 - joblisting-commons -> Contains POJOs and global exception handling.
